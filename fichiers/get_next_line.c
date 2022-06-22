@@ -8,56 +8,55 @@ si erreur elle renvoie -1.
 
 #include "get_next_line.h"
 
-char	*read_content(int fd, char *buffer, char *tmp, char *str)
+char	*read_content(int fd, char *buffer, char *tmp, char *stash)
 {
 	int	index_read; //le contenu lu par read. stocke dans buffer
 	
-	index_read = 1; 
-	if (index_read)
-	while (index_read >= 0) // tant qu' index_read n'est pas arrive au bout du fd, il stocke nbyte dans buffer 
+	index_read = 1;
+	while (index_read > 0) // tant qu' index_read n'est pas arrive au bout du fd, il stocke nbyte dans buffer 
 	{
 		index_read = read(fd, buffer, BUFFER_SIZE);
-		if (read(fd, buffer, BUFFER_SIZE) < 0)
+		if (index_read == -1)
 		{
 			free (buffer);
 			return (NULL);
 		}
-		buffer[index_read] = '\0';
-		tmp =  str;
-		if (!tmp)
+		buffer[index_read] = '\0'; //buffer[return de read] = buffer[nbytes]. On termine par '\0'
+		tmp =  stash;
+		if (tmp == NULL)
 		{
 			tmp = (char *)malloc(sizeof(char) * 1);//on laisse la place pour le '\0';
 			tmp[0] = '\0';
 		}
-		str = ft_strjoin(tmp, buffer);// on copie le contenu de buff dans str a la suite (strjoin)
+		stash = ft_strjoin(tmp, buffer);// on copie le contenu de buff dans str a la suite (strjoin)
 		free (tmp);
-		if(ft_strchr(str, '\n') != NULL) // si on trouve \n on break et on cree la line
+		if (ft_search_newline(stash) == 1) // si on trouve \n on break et on cree la line
 			break;
 	}
 	free (buffer);
-	return (str);
+	return (stash);
 }	
 
 char	*get_next_line(int fd)
 {
-	static 	char	*str; //copie du buffer dans stash (notre reserve)
+	static 	char	*stash; //copie du buffer dans stash (notre reserve)
 	char			*line; // ce qu'on retourne
 	char			*tmp;
 	char			*buffer;
 	
-	str = NULL;
-	line = NULL;
 	tmp = NULL;
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);
 	if (fd > 1023 || fd < 0 || BUFFER_SIZE <= 0) /* si fd < 0 pas de file descriptor, si erreur de valeur pour BUFFER_SIZE */
 		return (NULL);
-	/*on copie le contenu du buffer dans stash */
-	str = read_content(fd, buffer, tmp, str);
-	line = before_next_line(str); // on sort la line
-	tmp = str;
-	str = after_next_line(tmp); // on cleane pour ne garder que ce qui a ete lu apres le \n	
+	buffer = malloc(sizeof(char)*(BUFFER_SIZE + 1));// +1 car \0
+	if (!buffer)
+		return (NULL);
+	/*on copie le contenu du buffer dans str */
+	stash = read_content(fd, buffer, tmp, stash);
+	if (!stash)
+		return (NULL);
+	line = before_next_line(stash); // on sort la line
+	//tmp = stash;
+	stash = after_next_line(stash); // on cleane pour ne garder que ce qui a ete lu apres le \n	
 	//str = coucou (\n ca va ?\0)
 	return (line);
 }
@@ -66,7 +65,10 @@ char	*get_next_line(int fd)
 {
 	int fd = open("file", O_RDONLY);
 
-	printf("%s\n", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
 
 	return (0);
-}/*/
+}*/
