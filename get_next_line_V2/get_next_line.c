@@ -6,7 +6,7 @@
 /*   By: mvicedo <mvicedo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 12:20:51 by mvicedo           #+#    #+#             */
-/*   Updated: 2022/06/24 18:40:23 by mvicedo          ###   ########.fr       */
+/*   Updated: 2022/06/27 16:03:37 by mvicedo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*get_next_line(int fd)
 
 	i_read = 1;
 	buffer = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
+	if (fd < 0 || BUFFER_SIZE <= 0 || (read(fd, 0, 0) == -1))
 		return (NULL);
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
@@ -104,15 +104,3 @@ char	*get_next_line(int fd)
 	stash = ft_save_stash(stash);
 	return (line);
 }
-
-/*int	main(void)
-{
-	int fd = open("file", O_RDONLY);
-
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-
-	return (0);
-}*/

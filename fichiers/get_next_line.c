@@ -5,7 +5,6 @@ si erreur elle renvoie -1.
 */
 
 #include "get_next_line.h"
-#include "stdio.h"
 
 int    ft_search_newline(char *s)
 {
@@ -41,8 +40,8 @@ char	*ft_getline(char *stash)
 	}
 	if (stash[i] == '\n')
 		line[i++] = '\n';
-	printf("getline = %s", line);
 	line[i] = '\0';//on null termine la line
+	printf("getline = %s", line);
 	return (line);
 }
 
@@ -82,7 +81,7 @@ char	*get_next_line(int fd)
 	char			*buffer;
 	int				i_read;
 
-	i_read = 1;//on initialise a 1 pour pouvoir entrer dans le boucle
+	i_read = 1;//on initialise a 1 pour pouvoir entrer dans la boucle
 	buffer = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1) /* si fd < 0 pas de file, si erreur de valeur pour BUFFER_SIZE, si erreur de lecture de read( != 0) */
 		return (NULL);
@@ -93,14 +92,17 @@ char	*get_next_line(int fd)
 	{
 		i_read = read(fd, buffer, BUFFER_SIZE);// i_read = return de read a chaque passage
 		printf("buffer : %s  |   ", buffer);
+		printf("i_read : %d  |   ", i_read);
 		if (i_read == -1)
 			return (NULL);
 		buffer[i_read] = '\0'; //buffer[return de read] equivaut a buffer[nbytes]. On termine par '\0' la chaine buffer
 		printf("stash : %s   |  ", stash);
 		stash = ft_strjoin(stash, buffer);// on copie le contenu de buff dans stash a la suite (strjoin)
 		printf("apres strjoin, stash vaut  : %s    |   ", stash);
+		printf("ft_search : %d   | ", ft_search_newline(stash));
 	}
 	free (buffer);//on free le buffer car plus besoin
+	printf("i_read : %d  |   ", i_read);
 	line = ft_getline(stash); // on sort la line
 	//printf("y a quoi dans la line : %s", line);
 	//printf("y a quoi dans la stash : %s", stash);
