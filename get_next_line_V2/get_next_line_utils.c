@@ -35,10 +35,7 @@ char	*ft_strjoin(char *stash, char *buffer)
 	if (str == NULL)
 		return (NULL);
 	while (stash && stash[i] != '\0')
-	{
-		str[i] = stash[i];
-		i++;
-	}
+		str[i++] = stash[i++];
 	j = 0;
 	while (buffer && buffer[j] != '\0')
 		str[i++] = buffer[j++];
