@@ -17,9 +17,7 @@ int	ft_search_newline(char *s)
 	unsigned int	i;
 
 	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
+	while (s && s[i])
 	{
 		if (s[i] == '\n')
 			return (1);
@@ -40,10 +38,7 @@ char	*ft_getline(char *stash)
 	if (!line)
 		return (NULL);
 	while (stash[i] && stash[i] != '\n')
-	{
-		line[i] = stash[i];
-		i++;
-	}
+		line[i++] = stash[i++];
 	if (stash[i] == '\n')
 		line[i++] = '\n';
 	line[i] = '\0';
