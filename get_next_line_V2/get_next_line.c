@@ -40,7 +40,7 @@ char	*ft_getline(char *stash)
 	while (stash[i] && stash[i] != '\n')
 	{
 		line[i] = stash[i];
-		i++
+		i++;
 	}
 	if (stash[i] == '\n')
 		line[i++] = '\n';
