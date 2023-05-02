@@ -38,7 +38,10 @@ char	*ft_getline(char *stash)
 	if (!line)
 		return (NULL);
 	while (stash[i] && stash[i] != '\n')
-		line[i++] = stash[i++];
+	{
+		line[i] = stash[i];
+		i++
+	}
 	if (stash[i] == '\n')
 		line[i++] = '\n';
 	line[i] = '\0';
