@@ -95,7 +95,7 @@ char	*get_next_line(int fd)
 	{
 		i_read = read(fd, buffer, BUFFER_SIZE);
 		if (i_read == -1)
-			return (NULL);
+			return (free (buffer), NULL);
 		buffer[i_read] = '\0';
 		stash[fd] = ft_strjoin(stash[fd], buffer);
 	}
